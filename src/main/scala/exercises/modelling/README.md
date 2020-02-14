@@ -105,13 +105,44 @@ meaning we won't forget to do so.
 
 ### Bad implementation
 Take a look at ModellingExercise.scala. You can see a method badRunReport - what do you think could be improved about
-this method?
+this method, and the BadReportRunner.runReport method that it calls? 
 
 <details>
-  <summary>**Improvements to make**</summary>
+  <summary>Improvements to make</summary>
 Some things you may have spotted:
+
 * Unsafe reading values from a map
 * Unsafe conversion to an Integer
 * BadReportRunner.runReport looks like it will read in a table, which can throw an exception. However that is not shown
 in the return type
+* reportType is a String, instead of a more specific type
+* endDate is an Int, with no guarantees it will actually be a valid date
+* db and table are both Strings with no validation on them
+
 </details>
+
+### Your mission...
+Now that we understand some ways to make our code more typesafe, and we understand some of the issues with the
+existing implementation, your mission is to implement a new and improved version of this code.
+
+Write a method ReportRunner.runReport. You only need to write the type signature, not the implementation.
+
+Next complete the implementation of ModellingExercise.runReport. You can change the return type here if you think
+that may improve the method.
+
+### A possible solution
+In the solutions.modelling package you will find one possible solution including some improvements to type-safety for
+this example. How does this compare with your solution? Can you spot any issues with the "ideal" solution?
+
+<details>
+<summary>Some issues you may notice include:</summary>
+
+* One issue is that if one of the provided arguments has an issue it will report only that error. A user might end up
+running the application a number of times before they pick up the mistakes with all of the arguments! Wouldn't it
+be better to use something that gives back all of the errors straight away? Cats has some handy utilities for
+handling such a case, which you can check out here: https://typelevel.org/cats/datatypes/validated.html
+* You may also notice that it is a lot longer than the original solution. Do you think this is an issue? Can you see
+any potential pay-offs in return for this increased verbosity?
+
+</details>
+

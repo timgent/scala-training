@@ -27,7 +27,7 @@ object ModellingExercise {
 }
 
 object BadReportRunner {
-  def runReport(reportType: String, startDate: Int, db: String, table: String): ReportOutput = ???
+  def runReport(reportType: String, endDate: Int, db: String, table: String): ReportOutput = ???
 }
 
 object ReportRunner {
