@@ -103,5 +103,15 @@ meaning we won't forget to do so.
 
 ## The Exercise
 
+### Bad implementation
 Take a look at ModellingExercise.scala. You can see a method badRunReport - what do you think could be improved about
 this method?
+
+<details>
+  <summary>**Improvements to make**</summary>
+Some things you may have spotted:
+* Unsafe reading values from a map
+* Unsafe conversion to an Integer
+* BadReportRunner.runReport looks like it will read in a table, which can throw an exception. However that is not shown
+in the return type
+</details>

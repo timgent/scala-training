@@ -31,7 +31,7 @@ object BadReportRunner {
 }
 
 object ReportRunner {
-  def runReport(): ReportOutput = ???
+
 }
 
 case class ReportOutput(data: List[ReportData], description: String)
