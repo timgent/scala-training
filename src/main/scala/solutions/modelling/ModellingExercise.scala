@@ -11,7 +11,7 @@ import scala.util.Try
  * undesirable behaviour, can you spot it?
  * The issue is that if one of the provided arguments has an issue it will report only that error. A user might end up
  * running the application a number of times before they pick up the mistakes with all of the arguments! Wouldn't it
- * be better to use something that gives back all of the errors straight away? Cats has some handy utilitiesi for
+ * be better to use something that gives back all of the errors straight away? Cats has some handy utilities for
  * handling such a case, which you can check out here:
  * https://typelevel.org/cats/datatypes/validated.html
  */
@@ -20,18 +20,21 @@ object ModellingExercise {
   val endDateField = "endDate"
   val dbField = "db"
   val tableField = "table"
-  
+
   def runReport(arguments: Map[String, String]): ErrorOr[ReportOutput] = {
+    def getArgument(argumentName: String): ErrorOr[String] =
+      arguments.get(argumentName).toRight(MissingArgumentError(argumentName))
+
     for {
-      reportTypeStr <- arguments.get(reportTypeField).toRight(MissingArgumentError(reportTypeField))
+      reportTypeStr <- getArgument(reportTypeField)
       reportType <- ReportType.fromString(reportTypeStr)
-      startDateStr <- arguments.get(endDateField).toRight(MissingArgumentError(endDateField))
-      startDate <- Try(LocalDate.parse(startDateStr)).toEither
-        .left.map(e => InvalidArgumentError(endDateField, startDateStr, "Could not parse given date", Some(e)))
-      dbStr <- arguments.get(dbField).toRight(MissingArgumentError(dbField))
-      tableStr <- arguments.get(tableField).toRight(MissingArgumentError(tableField))
+      endDateStr <- getArgument(endDateField)
+      endDate <- Try(LocalDate.parse(endDateStr)).toEither
+        .left.map(e => InvalidArgumentError(endDateField, endDateStr, "Could not parse given date", Some(e)))
+      dbStr <- getArgument(dbField)
+      tableStr <- getArgument(tableField)
       tableName <- TableName[ReportData](dbStr, tableStr)
-      reportResult <- ReportRunner.runReport(reportType, startDate, tableName)
+      reportResult <- ReportRunner.runReport(reportType, endDate, tableName)
     } yield reportResult
   }
 }
